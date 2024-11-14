@@ -40,6 +40,11 @@ class Player(pygame.sprite.Sprite):
         if keystate[pygame.K_RIGHT]:
             self.speedx = 5
         self.rect.x += self.speedx
+        # make sure player sprite doesn't go off screen
+        if self.rect.right > screen_width:
+            self.rect.right = screen_width
+        if self.rect.left < 0:
+            self.rect.left = 0
 
 pygame.init()
 pygame.display.set_caption('Kyoorat Game')
