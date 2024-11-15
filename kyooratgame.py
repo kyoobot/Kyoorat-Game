@@ -26,7 +26,7 @@ class Player(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
         # I will stick with convert_alpha for now, but i will keep the convert/ color key method in mind in case i need it
-        self.image = pygame.image.load(os.path.join(img_folder,"testsprite.png")).convert_alpha()
+        self.image = player_img
         self.rect = self.image.get_rect()
         self.rect.centerx = screen_width/2
         self.rect.bottom = screen_height - 10
@@ -65,7 +65,7 @@ class Player(pygame.sprite.Sprite):
 class EnemyBact(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
-        self.image = pygame.image.load(os.path.join(img_folder,"enemytest.png")).convert_alpha()
+        self.image = bacteria_img
         self.rect = self.image.get_rect()
         self.rect.x = random.randrange(screen_height,screen_width)
         self.rect.y = random.randrange(0,screen_height - self.rect.height)
@@ -84,7 +84,7 @@ class EnemyBact(pygame.sprite.Sprite):
 class Bullet(pygame.sprite.Sprite):
     def __init__(self,x,y):
         pygame.sprite.Sprite.__init__(self)
-        self.image = pygame.image.load(os.path.join(img_folder,"projectiles1.png")).convert_alpha()
+        self.image = bullet_img
         self.rect = self.image.get_rect()
         self.rect.left = x
         self.rect.centery = y 
@@ -107,6 +107,12 @@ pygame.display.set_icon(rat_icon)
 pygame.mixer.init()
 clock = pygame.time.Clock()
 fps = 60
+
+# load all game graphics 
+player_img = pygame.image.load(os.path.join(img_folder,"testsprite.png")).convert_alpha()
+bacteria_img = pygame.image.load(os.path.join(img_folder,"enemytest.png")).convert_alpha()
+bullet_img = pygame.image.load(os.path.join(img_folder,"projectiles1.png")).convert_alpha()
+
 all_sprites = pygame.sprite.Group()
 enemies = pygame.sprite.Group()
 bullets = pygame.sprite.Group()
