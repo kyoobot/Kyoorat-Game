@@ -67,7 +67,7 @@ class EnemyBact(pygame.sprite.Sprite):
         pygame.sprite.Sprite.__init__(self)
         self.image = pygame.image.load(os.path.join(img_folder,"enemytest.png")).convert_alpha()
         self.rect = self.image.get_rect()
-        self.rect.x = random.randrange(0,screen_width - self.rect.width)
+        self.rect.x = random.randrange(screen_height,screen_width)
         self.rect.y = random.randrange(0,screen_height - self.rect.height)
         self.speedx = random.randrange(1,8)
         self.speedy = random.randrange(-2,2)
@@ -138,6 +138,14 @@ while running == True:
     #draw/render
     screen.fill(BLUE)
     all_sprites.draw(screen)
+
+    #check to see if bullet hit an enemy
+    hits = pygame.sprite.groupcollide(enemies,bullets, True, True)
+    for hit in hits:
+        enemy1 = EnemyBact()
+        all_sprites.add(enemy1)
+        enemies.add(enemy1)
+
 
     # check to see if enemy hits player
     #hits = pygame.sprite.spritecollide(player,enemies,False)
