@@ -46,6 +46,6 @@ class Player(pygame.sprite.Sprite):
         if self.rect.bottom > HEIGHT:
             self.rect.bottom = HEIGHT
     def shoot(self):
-        shot = bullet.Bullet(self.rect.left, self.rect.centery)
+        shot = bullet.Bullet(self.rect.left, self.rect.centery,self.game.bullet_img)
         self.game.all_sprites.add(shot)
         self.game.bullets.add(shot)

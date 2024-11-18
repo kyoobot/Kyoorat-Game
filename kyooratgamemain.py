@@ -40,7 +40,14 @@ class Game:
         self.enemies = pygame.sprite.Group()
         self.bullets = pygame.sprite.Group()
         self.player = player.Player(self.player_img, self)
-        self.all_sprites.add(self.player)
+        self.all_sprites.add(self.player)        
+        for index in range(8):
+            enemy1 = enemybact.EnemyBact(self.bacteria_img)
+            self.all_sprites.add(enemy1)
+            self.enemies.add(enemy1)
+
+
+
         self.run()
 
     def run(self):
@@ -69,13 +76,8 @@ class Game:
         if hits:
             self.running = False
         #meteor behavior for enemy, will be changed
-        for index in range(8):
-            enemy1 = enemybact.EnemyBact(self.bacteria_img)
-            self.all_sprites.add(enemy1)
-            self.enemies.add(enemy1)
-
-            self.all_sprites.update()
-
+        
+        self.all_sprites.update()
         
 
     def events(self):
@@ -91,7 +93,7 @@ class Game:
             elif event.type == pygame.KEYDOWN:
 
                 if event.key == pygame.K_SPACE:
-                    player.shoot()
+                    self.player.shoot()
         
     def draw(self):
         #game loop - draw

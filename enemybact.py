@@ -8,9 +8,9 @@ class EnemyBact(pygame.sprite.Sprite):
         pygame.sprite.Sprite.__init__(self)
         self.image = bacteria_img
         self.rect = self.image.get_rect()
-        self.radius = int(self.rect.width * .6 / 2)
+        # self.radius = int(self.rect.width * .6 / 2)
         # pygame.draw.circle(self.image,RED, self.rect.center,self.radius)
-        self.rect.x = random.randrange(WIDTH,HEIGHT)
+        self.rect.x = random.randrange(HEIGHT,WIDTH)
         self.rect.y = random.randrange(0,HEIGHT - self.rect.height)
         self.speedx = random.randrange(1,8)
         self.speedy = random.randrange(-2,2)
