@@ -40,7 +40,9 @@ class Game:
         self.enemies = pygame.sprite.Group()
         self.bullets = pygame.sprite.Group()
         self.player = player.Player(self.player_img, self)
-        self.all_sprites.add(self.player)        
+        self.all_sprites.add(self.player)
+        
+        #meteor behavior for enemy, will be changed        
         for index in range(8):
             enemy1 = enemybact.EnemyBact(self.bacteria_img)
             self.all_sprites.add(enemy1)
@@ -75,7 +77,7 @@ class Game:
         #hits = pygame.sprite.spritecollide(player,enemies,False)
         if hits:
             self.running = False
-        #meteor behavior for enemy, will be changed
+
         
         self.all_sprites.update()
         
