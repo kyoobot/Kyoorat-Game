@@ -26,6 +26,11 @@ class Game:
 
 
         #load all game graphics
+        # bg sprites
+
+        self.bg = pygame.image.load(os.path.join(img_folder,"bgimage1.png")).convert_alpha()
+
+        # actor sprites
 
         self.player_img = pygame.image.load(os.path.join(img_folder,"kyoorat.png")).convert_alpha()
         self.bacteria_img = pygame.image.load(os.path.join(img_folder,"enemy-Sheet.png")).convert_alpha()
