@@ -30,13 +30,16 @@ class Game:
         # bg sprites and needed variables
 
         self.bg_images = []
+        self.bg_scroll = []
+        self.scroll = 0
         self.num_bg_layers = 4
         for i in range(1,self.num_bg_layers+1):
             bg_image = pygame.image.load(os.path.join(img_folder,f"bgimage{i}.png")).convert_alpha()
             self.bg_images.append(bg_image)
+            self.bg_scroll.append(0)
         self.bg_width = self.bg_images[0].get_width()
-        self.tiles = math.ceil(WIDTH / self.bg_width) + 1
-        self.scroll = 0 
+        self.tiles = math.ceil(WIDTH / self.bg_width) + self.num_bg_layers
+        
 
         # actor sprites
 
@@ -93,8 +96,6 @@ class Game:
             self.running = False
 
         
-
-        
         self.all_sprites.update()
         
 
@@ -119,16 +120,20 @@ class Game:
         # scrolling bg
         for i in range(0, self.tiles):
             speed = 1
-            for j in self.bg_images:
-                self.screen.blit(j, (i * self.bg_width + self.scroll * speed, 0))
-                speed += 0.2
+            for j in range(0, len(self.bg_images)):
+                self.screen.blit(self.bg_images[j], (i * self.bg_width + self.bg_scroll[j] * speed , 0))
+                speed += 1
+                if i == self.tiles-1:
+                    self.bg_scroll[j] -= 1
                 
-        self.scroll -= 2 
-
-
-        # reset scroll 
-        if abs(self.scroll) > self.bg_width: 
-            self.scroll = 0 
+        # reset scroll for each layer if needed
+        for i in range (0, self.tiles):
+            speed = 1
+            for j in range(0, len(self.bg_images)):
+                if abs(self.bg_scroll[j]) > self.bg_width:
+                    if i == self.tiles - 1:
+                        self.bg_scroll[j] = 0
+                speed += 1
         
         self.all_sprites.draw(self.screen)
 
