@@ -4,6 +4,7 @@ import os
 from settings import *
 import player
 import enemybact
+import math
 
 
 class Game:
@@ -29,7 +30,8 @@ class Game:
         # bg sprites
 
         self.bg = pygame.image.load(os.path.join(img_folder,"bgimage1.png")).convert_alpha()
-
+        self.bg_width = self.bg.get_width()
+        self.tiles = math.ceil(WIDTH / self.bg_width)
         # actor sprites
 
         self.player_img = pygame.image.load(os.path.join(img_folder,"kyoorat.png")).convert_alpha()
@@ -63,6 +65,7 @@ class Game:
         self.playing = True
         while self.playing == True:
             self.clock.tick(FPS)
+
             self.events()
             self.update()
             self.draw()
@@ -106,7 +109,10 @@ class Game:
         
     def draw(self):
         #game loop - draw
-        self.screen.fill(BLUE)
+        #self.screen.fill(BLUE)
+                    # scrolling bg
+        for i in range(0, self.tiles):
+            self.screen.blit(self.bg, (i * self.bg_width, 0))
         self.all_sprites.draw(self.screen)
 
 
