@@ -27,8 +27,8 @@ class Game:
 
         #load all game graphics
 
-        self.player_img = pygame.image.load(os.path.join(img_folder,"testsprite.png")).convert_alpha()
-        self.bacteria_img = pygame.image.load(os.path.join(img_folder,"enemytest.png")).convert_alpha()
+        self.player_img = pygame.image.load(os.path.join(img_folder,"kyoorat.png")).convert_alpha()
+        self.bacteria_img = pygame.image.load(os.path.join(img_folder,"enemy-Sheet.png")).convert_alpha()
         self.bullet_img = pygame.image.load(os.path.join(img_folder,"projectiles1.png")).convert_alpha()
 
 
@@ -79,6 +79,8 @@ class Game:
             self.running = False
 
         
+
+        
         self.all_sprites.update()
         
 
@@ -101,6 +103,8 @@ class Game:
         #game loop - draw
         self.screen.fill(BLUE)
         self.all_sprites.draw(self.screen)
+
+
 
         #after drawing everything flip the display
         pygame.display.flip()
