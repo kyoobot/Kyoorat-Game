@@ -20,6 +20,9 @@ class Player(pygame.sprite.Sprite):
         self.speed = 10
         self.direction = pygame.Vector2()
 
+        # Gameplay stats
+        self.health = 100
+
 
     def update(self):
         #self.speedx = 0 
