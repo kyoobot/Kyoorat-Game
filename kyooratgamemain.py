@@ -57,6 +57,8 @@ class Game:
     def new(self):
         #start a new game
 
+        self.enemy_kills = 0
+
         self.all_sprites = pygame.sprite.Group()
         self.enemies = pygame.sprite.Group()
         self.bullets = pygame.sprite.Group()
@@ -99,7 +101,7 @@ class Game:
         # perform hit logic only if player is not invincible
         if hits and not self.player.invincible:
             # the enemies do 3 dmg to kyoorat per hit
-            self.player.health -= 3
+            self.player.health -= 30
             if self.player.health < 0:
                 # the game ends, and the player is taken to the game over screen
                 self.playing = False
@@ -200,8 +202,38 @@ class Game:
 
 
     def show_go_screen(self):
-        # game over/continue
-        pass
+        # game over screen image
+        go_screen = pygame.image.load(os.path.join(self.img_folder,"gameover.png")).convert_alpha()
+        
+        # start screen loop - will end when player
+        # presses either Enter or Esc
+        self.clock.tick(60)
+
+        running = True
+        while running and self.running:
+
+            # Check for events
+            for event in pygame.event.get():
+                #check for closing window
+                if event.type == pygame.QUIT:
+                    if self.playing:
+                        self.playing = False
+                    self.running = False
+                    running = False
+
+                elif event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_ESCAPE:
+                        if self.playing:
+                            self.playing = False
+                        self.running = False
+                        running = False
+                    
+                    if event.key == pygame.K_RETURN:
+                        self.playing = True
+                        running = False
+            
+            self.screen.blit(go_screen, (0, 0))
+            pygame.display.flip()
 
 g = Game() 
 

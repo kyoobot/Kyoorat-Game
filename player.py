@@ -9,11 +9,12 @@ class Player(pygame.sprite.Sprite):
         pygame.sprite.Sprite.__init__(self)
         # I will stick with convert_alpha for now, but i will keep the convert/ color key method in mind in case i need it
         self.image = player_img
+        self.image.set_alpha(255)
         self.rect = self.image.get_rect()
-        self.rect.centerx = WIDTH/2
+        self.rect.centerx = WIDTH/6
         self.radius = int(self.rect.height)
         # pygame.draw.circle(self.image,RED, self.rect.center,self.radius)
-        self.rect.bottom = HEIGHT - 10
+        self.rect.bottom = HEIGHT/2 + self.image.get_height()
         #self.speedx = 0 
         #self.speedy = 0
         self.game = wholegame
