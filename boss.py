@@ -106,8 +106,8 @@ class Boss(pygame.sprite.Sprite):
             self.action = 1
             self.frame = 0 
         else: 
-            if self.frame >= len(self.animation_list[self.action]):
-                print("the code gets here")
+            if self.frame >= len(self.animation_list[self.action]) - 1:
+                self.frame = 0
                 self.action = 3
                 self.has_transitioned_to_phase_2 = True
                 self.invincible = False
