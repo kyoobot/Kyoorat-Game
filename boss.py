@@ -2,6 +2,7 @@ import pygame
 import os
 from settings import *
 import random
+import bossbullet
 
 
 
@@ -111,3 +112,10 @@ class Boss(pygame.sprite.Sprite):
                 self.action = 3
                 self.has_transitioned_to_phase_2 = True
                 self.invincible = False
+
+    # copying shoot from kyoorat player
+    def shoot(self):
+        shot = bossbullet.BossBullet(self.rect.right, self.rect.centery,self.game.boss_bullet1)
+        self.game.all_sprites.add(shot)
+        self.game.bullets.add(shot)
+
