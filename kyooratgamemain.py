@@ -142,6 +142,7 @@ class Game:
                 self.playing = False
             # give the player invincibility for a short period
             self.player.invincible = True
+        
 
         # check to see if boss is hit by bullet
         for bullet in self.bullets.sprites():
@@ -151,6 +152,17 @@ class Game:
                     self.boss.health -= 500
 
 
+        # check to see if kyoorat is hit by bullet
+        for bullet in self.boss_p1_bullets.sprites():
+            if pygame.sprite.collide_mask(self.player, bullet) and not self.player.invincible:
+                self.player.health -= 7
+                bullet.kill()
+                if self.player.health <= 0:
+                    # the game ends, and the player is taken to the game over screen
+                    self.playing = False
+                # give the player invincibility for a short period
+                self.player.invincible = True
+                break
 
         
         self.all_sprites.update()
