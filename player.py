@@ -71,7 +71,7 @@ class Player(pygame.sprite.Sprite):
                 self.blinky = 0
 
             
-            if self.iframes < 0:
+            if self.iframes <= 0:
                 self.iframes = 180
                 self.invincible = False
                 self.image.set_alpha(255)

@@ -100,8 +100,8 @@ class Game:
         hits = pygame.sprite.spritecollide(self.player, self.enemies, False)
         # perform hit logic only if player is not invincible
         if hits and not self.player.invincible:
-            # the enemies do 3 dmg to kyoorat per hit
-            self.player.health -= 30
+            # the enemies do 5 dmg to kyoorat per hit
+            self.player.health -= 5
             if self.player.health < 0:
                 # the game ends, and the player is taken to the game over screen
                 self.playing = False
