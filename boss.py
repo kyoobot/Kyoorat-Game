@@ -28,18 +28,26 @@ class Boss(pygame.sprite.Sprite):
         self.bosstime = False
         self.invincible = True
         self.has_entered_arena = False
+        self.has_transitioned_to_phase_2 = False
         self.phase = 1 
 
         #animation variables!
         self.animation_list = []
-        self.animation_steps = 3
+        self.animation_steps = [5,7,5,4]
         self.last_update = pygame.time.get_ticks()
-        self.animation_cooldown = 300 
+        self.animation_cooldown = 100
         self.frame = 0 
+        self.action = 0
+        self.step_counter = 0 
 
         # for loop for animation, works with update(self)
-        for x in range(self.animation_steps):
-            self.animation_list.append(self._get_image(x))
+        for animation in self.animation_steps:
+            temp_img_list = []
+            for _ in range(animation): 
+                temp_img_list.append(self._get_image(self.step_counter))
+                self.step_counter += 1
+            self.animation_list.append(temp_img_list)
+
         
         self.update()
 
@@ -64,21 +72,36 @@ class Boss(pygame.sprite.Sprite):
         if current_time - self.last_update >= self.animation_cooldown: 
             self.frame += 1
             self.last_update = current_time
-            if self.frame >= len(self.animation_list):
+            if self.frame >= len(self.animation_list[self.action]):
                 self.frame = 0
-        self.image = self.animation_list[self.frame]
+        self.image = self.animation_list[self.action][self.frame]
         self.mask = pygame.mask.from_surface(self.image)
 
         # bosstime
         if self.bosstime:
             if not self.has_entered_arena:
                 self.move_into_arena()
-                print("entering arena")
             else: 
-                print("has entered arena")
+                self.invincible = False
+            # check health for 2nd phase
+            if self.health <= 1500:
+                self.phase = 2
+            if self.phase == 2:
+                if not self.has_transitioned_to_phase_2:
+                    self.invincible = True
+                    self.move_to_phase_2() 
     
     def move_into_arena(self):
-        if self.rect.x > WIDTH - self.width - 20:
+        if self.rect.x > WIDTH - self.width:
             self.rect.x -= 5
         else:
             self.has_entered_arena = True
+
+    def move_to_phase_2(self): 
+        if self.action != 2: 
+            self.action = 2
+        else: 
+            if self.frame >= len(self.animation_list[self.action]):
+                self.action = 4
+                self.has_transitioned_to_phase_2 = True
+                self.invincible = False

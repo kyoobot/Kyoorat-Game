@@ -133,6 +133,25 @@ class Game:
         # check if it is bosstime
         if self.enemy_kills >= 100:
             self.boss.bosstime = True
+
+        # check to see if boss hits player
+        if pygame.sprite.collide_mask(self.player, self.boss) and not self.player.invincible:
+            self.player.health -= 7
+            if self.player.health <= 0:
+                # the game ends, and the player is taken to the game over screen
+                self.playing = False
+            # give the player invincibility for a short period
+            self.player.invincible = True
+
+        # check to see if boss is hit by bullet
+        for bullet in self.bullets.sprites():
+            if pygame.sprite.collide_mask(self.boss, bullet):
+                bullet.kill()
+                if not self.boss.invincible: 
+                    self.boss.health -= 500
+
+
+
         
         self.all_sprites.update()
         
@@ -184,7 +203,7 @@ class Game:
         if self.enemy_kills < 100:
             self.draw_text(self.screen, f"Enemies Destroyed: {self.enemy_kills}/100", self.text_font, (0, 0, 0), WIDTH/2, 0)
         else:
-            self.draw_text(self.screen, f"BOSS TIME! - Tardigrade | HEALTH: 3000", self.text_font, (255, 0, 0), WIDTH/2, 0)
+            self.draw_text(self.screen, f"BOSS TIME! - Tardigrade | HEALTH: {self.boss.health}", self.text_font, (255, 0, 0), WIDTH/2, 0)
 
 
 
