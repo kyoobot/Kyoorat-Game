@@ -4,6 +4,7 @@ import os
 from settings import *
 import player
 import enemybact
+import boss
 import math
 
 
@@ -51,6 +52,9 @@ class Game:
         self.player_img = pygame.image.load(os.path.join(self.img_folder,"kyoorat.png")).convert_alpha()
         self.bacteria_img = pygame.image.load(os.path.join(self.img_folder,"enemy-Sheet.png")).convert_alpha()
         self.bullet_img = pygame.image.load(os.path.join(self.img_folder,"projectiles1.png")).convert_alpha()
+        self.boss_img = pygame.image.load(os.path.join(self.img_folder,"boss-Sheet.png")).convert_alpha()
+        self.boss_bullet1 = pygame.image.load(os.path.join(self.img_folder,"projectiles2.png")).convert_alpha()
+        self.boss_bullet2 = pygame.image.load(os.path.join(self.img_folder,"projectiles2.png")).convert_alpha()
 
 
 
@@ -63,7 +67,11 @@ class Game:
         self.enemies = pygame.sprite.Group()
         self.bullets = pygame.sprite.Group()
         self.player = player.Player(self.player_img, self)
+        self.boss = boss.Boss(self.boss_img, self)
+        self.boss_p1_bullets = pygame.sprite.Group()
+        self.boss_p2_bullets = pygame.sprite.Group()
         self.all_sprites.add(self.player)
+        self.all_sprites.add(self.boss)
         
         #meteor behavior for enemy, will be changed        
         for index in range(8):
@@ -99,7 +107,8 @@ class Game:
                     break
         #hits = pygame.sprite.groupcollide(self.enemies,self.bullets, True, True)
         for hit in hits:
-            self.enemy_kills += 1
+            #debug for boss, set back to 1 after.
+            self.enemy_kills += 25
             enemy1 = enemybact.EnemyBact(self.bacteria_img)
             self.all_sprites.add(enemy1)
             self.enemies.add(enemy1)
@@ -121,7 +130,9 @@ class Game:
             # give the player invincibility for a short period
             self.player.invincible = True
 
-
+        # check if it is bosstime
+        if self.enemy_kills >= 100:
+            self.boss.bosstime = True
         
         self.all_sprites.update()
         

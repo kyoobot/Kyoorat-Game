@@ -5,7 +5,7 @@ import bullet
 
 class Player(pygame.sprite.Sprite):
     # sprite for the player
-    def __init__(self,player_img, wholegame):
+    def __init__(self, player_img, wholegame):
         pygame.sprite.Sprite.__init__(self)
         # I will stick with convert_alpha for now, but i will keep the convert/ color key method in mind in case i need it
         self.image = player_img
