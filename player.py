@@ -22,6 +22,9 @@ class Player(pygame.sprite.Sprite):
 
         # Gameplay stats
         self.health = 100
+        self.iframes = 180
+        self.invincible = False
+        self.blinky = 0
 
 
     def update(self):
@@ -54,6 +57,25 @@ class Player(pygame.sprite.Sprite):
             self.rect.top = 0
         if self.rect.bottom > HEIGHT:
             self.rect.bottom = HEIGHT
+
+        # update kyroorat's invincibility if needed
+        if self.invincible == True:
+            self.iframes -= 1
+
+            if self.blinky == 0:
+                self.image.set_alpha(125)
+                self.blinky = 1
+            else:
+                self.image.set_alpha(30)
+                self.blinky = 0
+
+            
+            if self.iframes < 0:
+                self.iframes = 180
+                self.invincible = False
+                self.image.set_alpha(255)
+
+
     def shoot(self):
         shot = bullet.Bullet(self.rect.left, self.rect.centery,self.game.bullet_img)
         self.game.all_sprites.add(shot)
