@@ -89,7 +89,15 @@ class Game:
         #game loop update
         
         #check to see if bullet hit an enemy
-        hits = pygame.sprite.groupcollide(self.enemies,self.bullets, True, True)
+        hits = []
+        for enemy in self.enemies.sprites():
+            for bullet in self.bullets.sprites():
+                if pygame.sprite.collide_mask(enemy, bullet):
+                    enemy.kill()
+                    bullet.kill()
+                    hits.append(0)
+                    break
+        #hits = pygame.sprite.groupcollide(self.enemies,self.bullets, True, True)
         for hit in hits:
             self.enemy_kills += 1
             enemy1 = enemybact.EnemyBact(self.bacteria_img)
@@ -97,7 +105,11 @@ class Game:
             self.enemies.add(enemy1)
 
         # check to see if enemy hits player
-        hits = pygame.sprite.spritecollide(self.player, self.enemies, False)
+        #hits = pygame.sprite.spritecollide(self.player, self.enemies, False)
+        hits = []
+        for enemy in self.enemies.sprites():
+            if pygame.sprite.collide_mask(self.player, enemy):
+                hits.append(0)
         # perform hit logic only if player is not invincible
         if hits and not self.player.invincible:
             # the enemies do 5 dmg to kyoorat per hit

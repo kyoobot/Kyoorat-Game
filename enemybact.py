@@ -10,6 +10,7 @@ class EnemyBact(pygame.sprite.Sprite):
         pygame.sprite.Sprite.__init__(self)
         self.image = bacteria_img
         self.rect = self.image.get_rect()
+        self.mask = pygame.mask.from_surface(self.image)
         # self.radius = int(self.rect.width * .6 / 2)
         # pygame.draw.circle(self.image,RED, self.rect.center,self.radius)
         self.rect.x = random.randrange(HEIGHT,WIDTH)

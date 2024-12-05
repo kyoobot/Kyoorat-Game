@@ -11,6 +11,7 @@ class Player(pygame.sprite.Sprite):
         self.image = player_img
         self.image.set_alpha(255)
         self.rect = self.image.get_rect()
+        self.mask = pygame.mask.from_surface(self.image)
         self.rect.centerx = WIDTH/6
         self.radius = int(self.rect.height)
         # pygame.draw.circle(self.image,RED, self.rect.center,self.radius)
