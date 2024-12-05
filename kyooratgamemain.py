@@ -60,6 +60,7 @@ class Game:
 
     def new(self):
         #start a new game
+        self.win = 0
 
         self.enemy_kills = 0
 
@@ -73,13 +74,14 @@ class Game:
         self.all_sprites.add(self.player)
         self.all_sprites.add(self.boss)
         
-        #meteor behavior for enemy, will be changed        
-        for index in range(8):
+        #meteor behavior for enemy, will be changed  
+        self.num_enemies_on_screen = 0
+        self.max_enemies = 8      
+        for index in range(self.max_enemies):
             enemy1 = enemybact.EnemyBact(self.bacteria_img)
             self.all_sprites.add(enemy1)
             self.enemies.add(enemy1)
-
-
+            self.num_enemies_on_screen += 1
 
         self.run()
 
@@ -91,6 +93,8 @@ class Game:
             self.events()
             self.update()
             self.draw()
+        
+        return self.win
 
                 
     def update(self):
@@ -104,14 +108,16 @@ class Game:
                     enemy.kill()
                     bullet.kill()
                     hits.append(0)
+                    self.num_enemies_on_screen -= 1
                     break
         #hits = pygame.sprite.groupcollide(self.enemies,self.bullets, True, True)
         for hit in hits:
-            #debug for boss, set back to 1 after.
-            self.enemy_kills += 25
-            enemy1 = enemybact.EnemyBact(self.bacteria_img)
-            self.all_sprites.add(enemy1)
-            self.enemies.add(enemy1)
+            self.enemy_kills += 1
+            if self.num_enemies_on_screen < self.max_enemies:
+                enemy1 = enemybact.EnemyBact(self.bacteria_img)
+                self.all_sprites.add(enemy1)
+                self.enemies.add(enemy1)
+                self.num_enemies_on_screen += 1
 
         # check to see if enemy hits player
         #hits = pygame.sprite.spritecollide(self.player, self.enemies, False)
@@ -131,7 +137,7 @@ class Game:
             self.player.invincible = True
 
         # check if it is bosstime
-        if self.enemy_kills >= 100:
+        if self.enemy_kills >= 75:
             self.boss.bosstime = True
 
         # check to see if boss hits player
@@ -149,7 +155,7 @@ class Game:
             if pygame.sprite.collide_mask(self.boss, bullet):
                 bullet.kill()
                 if not self.boss.invincible: 
-                    self.boss.health -= 500
+                    self.boss.health -= 25
 
 
         # check to see if kyoorat is hit by bullet
@@ -163,6 +169,16 @@ class Game:
                 # give the player invincibility for a short period
                 self.player.invincible = True
                 break
+        
+        # half the number of regular enemies when it is bosstime
+        if self.boss.bosstime:
+            self.max_enemies = 4
+        
+        # check if the boss is defeated
+        if self.boss.health <= 0:
+            # the game ends, and the player is taken to the win screen
+            self.win = 1
+            self.playing = False
 
         
         self.all_sprites.update()
@@ -212,8 +228,8 @@ class Game:
 
         # draw the gameplay stats on top of everything
         self.draw_text(self.screen, f"Kyroorat | HEALTH: {self.player.health}", self.text_font, (0, 0, 0), 0, 0)
-        if self.enemy_kills < 100:
-            self.draw_text(self.screen, f"Enemies Destroyed: {self.enemy_kills}/100", self.text_font, (0, 0, 0), WIDTH/2, 0)
+        if self.enemy_kills < 75:
+            self.draw_text(self.screen, f"Enemies Destroyed: {self.enemy_kills}/75", self.text_font, (0, 0, 0), WIDTH/2, 0)
         else:
             self.draw_text(self.screen, f"BOSS TIME! - Tardigrade | HEALTH: {self.boss.health}", self.text_font, (255, 0, 0), WIDTH/2, 0)
 
@@ -256,9 +272,13 @@ class Game:
             pygame.display.flip()
 
 
-    def show_go_screen(self):
+    def show_go_screen(self, game_won):
         # game over screen image
-        go_screen = pygame.image.load(os.path.join(self.img_folder,"gameover.png")).convert_alpha()
+        if game_won:
+            go_screen = pygame.image.load(os.path.join(self.img_folder,"winscreen.png")).convert_alpha()
+        else:
+            go_screen = pygame.image.load(os.path.join(self.img_folder,"gameover.png")).convert_alpha()
+        
         
         # start screen loop - will end when player
         # presses either Enter or Esc
@@ -295,7 +315,7 @@ g = Game()
 while g.running == True:
     g.show_start_screen()
     g.new()
-    g.run()
-    g.show_go_screen()
+    game_result = g.run()
+    g.show_go_screen(game_result)
 
 pygame.quit()
