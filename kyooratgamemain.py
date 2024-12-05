@@ -85,7 +85,8 @@ class Game:
                 
     def update(self):
         #game loop update
-            #check to see if bullet hit an enemy
+        
+        #check to see if bullet hit an enemy
         hits = pygame.sprite.groupcollide(self.enemies,self.bullets, True, True)
         for hit in hits:
             self.enemy_kills += 1
@@ -93,11 +94,18 @@ class Game:
             self.all_sprites.add(enemy1)
             self.enemies.add(enemy1)
 
-
         # check to see if enemy hits player
-        #hits = pygame.sprite.spritecollide(player,enemies,False)
-        if hits:
-            self.running = False
+        hits = pygame.sprite.spritecollide(self.player, self.enemies, False)
+        # perform hit logic only if player is not invincible
+        if hits and not self.player.invincible:
+            # the enemies do 3 dmg to kyoorat per hit
+            self.player.health -= 3
+            if self.player.health < 0:
+                # the game ends, and the player is taken to the game over screen
+                self.playing = False
+            # give the player invincibility for a short period
+            self.player.invincible = True
+
 
         
         self.all_sprites.update()
