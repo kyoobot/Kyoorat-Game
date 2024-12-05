@@ -78,7 +78,7 @@ class Boss(pygame.sprite.Sprite):
                 print("has entered arena")
     
     def move_into_arena(self):
-        if self.rect.right > WIDTH - 20:
-            self.rect.right -= 5
+        if self.rect.x > WIDTH - self.width - 20:
+            self.rect.x -= 5
         else:
             self.has_entered_arena = True
