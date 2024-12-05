@@ -79,17 +79,20 @@ class Boss(pygame.sprite.Sprite):
 
         # bosstime
         if self.bosstime:
-            if not self.has_entered_arena:
-                self.move_into_arena()
-            else: 
-                self.invincible = False
-            # check health for 2nd phase
-            if self.health <= 1500:
-                self.phase = 2
-            if self.phase == 2:
+            if self.phase == 1: 
+                if not self.has_entered_arena:
+                    self.move_into_arena()
+                else: 
+                    self.invincible = False
+                # check health for 2nd phase
+                if self.health <= 1500:
+                    self.phase = 2
+            else:
                 if not self.has_transitioned_to_phase_2:
                     self.invincible = True
                     self.move_to_phase_2() 
+                else:
+                    self.invincible = False
     
     def move_into_arena(self):
         if self.rect.x > WIDTH - self.width:
@@ -98,10 +101,13 @@ class Boss(pygame.sprite.Sprite):
             self.has_entered_arena = True
 
     def move_to_phase_2(self): 
-        if self.action != 2: 
-            self.action = 2
+
+        if self.action != 1: 
+            self.action = 1
+            self.frame = 0 
         else: 
             if self.frame >= len(self.animation_list[self.action]):
-                self.action = 4
+                print("the code gets here")
+                self.action = 3
                 self.has_transitioned_to_phase_2 = True
                 self.invincible = False
