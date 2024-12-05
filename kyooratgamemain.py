@@ -110,11 +110,12 @@ class Game:
         for enemy in self.enemies.sprites():
             if pygame.sprite.collide_mask(self.player, enemy):
                 hits.append(0)
+                break
         # perform hit logic only if player is not invincible
         if hits and not self.player.invincible:
             # the enemies do 5 dmg to kyoorat per hit
             self.player.health -= 5
-            if self.player.health < 0:
+            if self.player.health <= 0:
                 # the game ends, and the player is taken to the game over screen
                 self.playing = False
             # give the player invincibility for a short period
