@@ -47,7 +47,7 @@ class Boss(pygame.sprite.Sprite):
         image = pygame.Surface((self.width,self.height)).convert_alpha()
         image.blit(self.image,(0,0),((frame * self.width), 0,self.width,self.height))
         image = pygame.transform.scale(image,(self.width * self.scale, self.height * self.scale))
-        image.set_colorkey(BLACK)
+        image.set_colorkey(GREEN)
         return image
 
 
@@ -73,9 +73,12 @@ class Boss(pygame.sprite.Sprite):
         if self.bosstime:
             if not self.has_entered_arena:
                 self.move_into_arena()
+                print("entering arena")
+            else: 
+                print("has entered arena")
     
     def move_into_arena(self):
         if self.rect.right > WIDTH - 20:
-            self.rect.x -= 1
+            self.rect.right -= 5
         else:
             self.has_entered_arena = True
