@@ -31,6 +31,7 @@ class Boss(pygame.sprite.Sprite):
         self.has_entered_arena = False
         self.has_transitioned_to_phase_2 = False
         self.phase = 1 
+        self.time_to_next_shot = 120
 
         #animation variables!
         self.animation_list = []
@@ -40,6 +41,7 @@ class Boss(pygame.sprite.Sprite):
         self.frame = 0 
         self.action = 0
         self.step_counter = 0 
+        
 
         # for loop for animation, works with update(self)
         for animation in self.animation_steps:
@@ -94,6 +96,13 @@ class Boss(pygame.sprite.Sprite):
                     self.move_to_phase_2() 
                 else:
                     self.invincible = False
+            # randomly shoot bullets
+
+            if self.time_to_next_shot <= 0 and self.has_entered_arena: 
+                self.shoot()
+                self.time_to_next_shot = random.randrange(120,240)
+            self.time_to_next_shot -= 1
+            
     
     def move_into_arena(self):
         if self.rect.x > WIDTH - self.width:
@@ -115,7 +124,7 @@ class Boss(pygame.sprite.Sprite):
 
     # copying shoot from kyoorat player
     def shoot(self):
-        shot = bossbullet.BossBullet(self.rect.right, self.rect.centery,self.game.boss_bullet1)
+        shot = bossbullet.BossBullet(WIDTH/2, HEIGHT/2 - 60 ,self.game.boss_bullet1)
         self.game.all_sprites.add(shot)
-        self.game.bullets.add(shot)
+        self.game.boss_p1_bullets.add(shot)
 

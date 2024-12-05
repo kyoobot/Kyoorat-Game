@@ -7,12 +7,16 @@ class BossBullet(pygame.sprite.Sprite):
         self.image = bullet_img
         self.rect = self.image.get_rect()
         self.mask = pygame.mask.from_surface(self.image)
-        self.rect.left = x
-        self.rect.centery = y 
-        self.speedx = 10
+        self.width = 100
+        self.height = 100
+        self.rect.x = x
+        self.rect.y = y 
+        self.speedx = 5
+        self.scale = 3
+        self.image = pygame.transform.scale(self.image,(self.width * self.scale, self.height * self.scale))
 
     def update(self):
         self.rect.x -= self.speedx
         # kill if it goes off screen
-        if self.rect.left < WIDTH:
+        if self.rect.left < 0 - 10:
             self.kill()
